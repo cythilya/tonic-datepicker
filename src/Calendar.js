@@ -9,22 +9,13 @@ import {
   Button,
   Flex
 } from "@trendmicro/react-styled-ui";
-
-const MONTH = {
-  1: "January",
-  2: "February",
-  3: "March",
-  4: "April",
-  5: "May",
-  6: "June",
-  7: "July",
-  8: "Angust",
-  9: "September",
-  10: "October",
-  11: "November",
-  12: "December"
-};
-const DAY = ["S", "M", "T", "W", "T", "F", "S"];
+import {
+  DAY,
+  DEFAULT_WEEK_ROW,
+  FEB_OF_LEAP_YEAR,
+  MONTH_DAYS,
+  MONTH,
+} from './constants';
 
 export const dateToAry = (rawDate) => {
   const newDate = new Date(rawDate);
@@ -66,9 +57,6 @@ const Calendar = ({ startDate: rawDate, onSelect }) => {
 
   const getDays = ({ year, month }) => {
     const days = [];
-    let WEEK_ROW = 5;
-    const MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    const FEB_OF_LEAP_YEAR = 29;
 
     const isLeapYear = (checkYear) =>
       new Date(checkYear, 1, FEB_OF_LEAP_YEAR).getDate() === FEB_OF_LEAP_YEAR;
@@ -81,7 +69,7 @@ const Calendar = ({ startDate: rawDate, onSelect }) => {
       return curDate;
     };
 
-    const daysLength = WEEK_ROW * DAY.length;
+    const daysLength = DEFAULT_WEEK_ROW * DAY.length;
     const curMonthDays = getMonthDays(year, month);
     const curMonthFirstDay = new Date(`${year}-${month}-01`).getDay();
 
