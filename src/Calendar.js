@@ -16,6 +16,7 @@ import {
   MONTH_DAYS,
   MONTH,
 } from './constants';
+import Day from './Day';
 
 export const dateToAry = (rawDate) => {
   const newDate = new Date(rawDate);
@@ -173,32 +174,18 @@ const Calendar = ({ startDate: rawDate, onSelect }) => {
             <Grid templateRows="auto" templateColumns="repeat(7, 40px)">
               {getDays({ ...renderDate, selectedDateStr }).map(
                 ({ isCurMonth, isToday, ...dateInfo }) => {
-                  const dateInfoStr = Object.values(dateInfo).join("-");
-                  const isSelectedDate =
-                    selectedDateStr && selectedDateStr === dateInfoStr;
-                  const todayColor = isToday ? "blue:60" : "black:primary";
-                  const defaultColor = !isCurMonth
-                    ? "black:tertiary"
-                    : todayColor;
+                  const dateInfoStr = Object.values(dateInfo).join('-');
+                  const isSelectedDate = selectedDateStr && selectedDateStr === dateInfoStr;
+
                   return (
-                    <Flex
-                      height="10x"
-                      align="center"
-                      justify="center"
-                      cursor="pointer"
-                      color={
-                        isSelectedDate && isCurMonth
-                          ? "white:primary"
-                          : defaultColor
-                      }
-                      backgroundColor={
-                        isSelectedDate && isCurMonth ? "blue:60" : "none"
-                      }
+                    <Day
+                      date={dateInfo.date}
+                      dateInfoStr={dateInfoStr}
+                      isCurMonth={isCurMonth}
+                      isSelectedDate={isSelectedDate}
                       key={dateInfoStr}
-                      onClick={() => handleDateSelect(dateInfoStr)}
-                    >
-                      {dateInfo.date}
-                    </Flex>
+                      handleDateSelect={handleDateSelect}
+                    />
                   );
                 }
               )}
