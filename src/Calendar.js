@@ -17,6 +17,7 @@ import {
   MONTH,
   WEEK_CONFIG,
 } from './constants';
+import Controller from './Controller';
 import Week from './Week';
 import WeekTitle from './WeekTitle';
 
@@ -138,36 +139,20 @@ const Calendar = ({ startDate: rawDate, onSelect }) => {
       boxShadow={colorStyle.shadow.md}
       border-radius="3px"
     >
-      <Flex justify="space-between" mb="3x">
-        <Button
-          variant="ghost"
-          type="button"
-          aria-label="previous"
-          onClick={() => chageRenderDate(-1)}
-        >
-          <Icon icon="angle-left" />
-        </Button>
-        <Button variant="ghost" type="button" aria-label="change mode">
-          {MONTH[renderDate.month]} {renderDate.year}
-        </Button>
-        <Button
-          variant="ghost"
-          type="button"
-          onClick={() => chageRenderDate(1)}
-        >
-          <Icon icon="angle-right" />
-        </Button>
-      </Flex>
-        <Grid {...WEEK_CONFIG}>
-          <WeekTitle />
-        </Grid>
-        <Grid {...WEEK_CONFIG}>
-          <Week
-            getDays={getDays}
-            renderDate={renderDate}
-            selectedDateStr={selectedDateStr}
-            onSelectHandler={onSelectHandler}
-          />
+      <Controller
+        chageRenderDate={chageRenderDate}
+        renderDate={renderDate}
+      />
+      <Grid {...WEEK_CONFIG}>
+        <WeekTitle />
+      </Grid>
+      <Grid {...WEEK_CONFIG}>
+        <Week
+          getDays={getDays}
+          renderDate={renderDate}
+          selectedDateStr={selectedDateStr}
+          onSelectHandler={onSelectHandler}
+        />
       </Grid>
     </Flex>
   );
