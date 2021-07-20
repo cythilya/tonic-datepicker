@@ -158,23 +158,17 @@ const Calendar = ({ startDate: rawDate, onSelect }) => {
           <Icon icon="angle-right" />
         </Button>
       </Flex>
-      <Box>
-        {
-          <>
-            <Grid {...WEEK_CONFIG}>
-              <WeekTitle />
-            </Grid>
-            <Grid {...WEEK_CONFIG}>
-              <Week
-                getDays={getDays}
-                renderDate={renderDate}
-                selectedDateStr={selectedDateStr}
-                onSelectHandler={onSelectHandler}
-              />
-            </Grid>
-          </>
-        }
-      </Box>
+        <Grid {...WEEK_CONFIG}>
+          <WeekTitle />
+        </Grid>
+        <Grid {...WEEK_CONFIG}>
+          <Week
+            getDays={getDays}
+            renderDate={renderDate}
+            selectedDateStr={selectedDateStr}
+            onSelectHandler={onSelectHandler}
+          />
+      </Grid>
     </Flex>
   );
 };
