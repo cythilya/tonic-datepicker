@@ -121,7 +121,7 @@ const Calendar = ({ startDate: rawDate, onSelect }) => {
     );
   };
 
-  const handleDateSelect = (dateStr) => {
+  const onSelectHandler = (dateStr) => {
     setSelectedDateStr(dateStr);
     onSelect(new Date(dateStr));
   };
@@ -184,7 +184,7 @@ const Calendar = ({ startDate: rawDate, onSelect }) => {
                       isCurMonth={isCurMonth}
                       isSelectedDate={isSelectedDate}
                       key={dateInfoStr}
-                      handleDateSelect={handleDateSelect}
+                      onSelectHandler={onSelectHandler}
                     />
                   );
                 }
