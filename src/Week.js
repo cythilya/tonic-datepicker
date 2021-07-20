@@ -34,7 +34,7 @@ Week.propTypes = {
   onSelectHandler: PropTypes.func.isRequired,
 };
 
-Day.defaultProps = {
+Week.defaultProps = {
   selectedDateStr: '',
 };
 

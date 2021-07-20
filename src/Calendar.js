@@ -15,8 +15,10 @@ import {
   FEB_OF_LEAP_YEAR,
   MONTH_DAYS,
   MONTH,
+  WEEK_CONFIG,
 } from './constants';
 import Week from './Week';
+import WeekTitle from './WeekTitle';
 
 export const dateToAry = (rawDate) => {
   const newDate = new Date(rawDate);
@@ -159,19 +161,10 @@ const Calendar = ({ startDate: rawDate, onSelect }) => {
       <Box>
         {
           <>
-            <Grid templateRows="auto" templateColumns="repeat(7, 40px)">
-              {DAY.map((dayName, idx) => (
-                <Flex
-                  height="10x"
-                  align="center"
-                  justify="center"
-                  key={`${dayName}${idx}`}
-                >
-                  {dayName}
-                </Flex>
-              ))}
+            <Grid {...WEEK_CONFIG}>
+              <WeekTitle />
             </Grid>
-            <Grid templateRows="auto" templateColumns="repeat(7, 40px)">
+            <Grid {...WEEK_CONFIG}>
               <Week
                 getDays={getDays}
                 renderDate={renderDate}

@@ -30,3 +30,8 @@ export const DAY_FONT_COLOR = {
   0: 'black:tertiary',
   1: 'white:primary',
 };
+
+export const WEEK_CONFIG = {
+  templateColumns: 'repeat(7, 40px)',
+  templateRows: 'auto',
+};
