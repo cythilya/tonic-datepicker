@@ -16,7 +16,7 @@ import {
   MONTH_DAYS,
   MONTH,
 } from './constants';
-import Day from './Day';
+import Week from './Week';
 
 export const dateToAry = (rawDate) => {
   const newDate = new Date(rawDate);
@@ -172,23 +172,12 @@ const Calendar = ({ startDate: rawDate, onSelect }) => {
               ))}
             </Grid>
             <Grid templateRows="auto" templateColumns="repeat(7, 40px)">
-              {getDays({ ...renderDate, selectedDateStr }).map(
-                ({ isCurMonth, isToday, ...dateInfo }) => {
-                  const dateInfoStr = Object.values(dateInfo).join('-');
-                  const isSelectedDate = selectedDateStr && selectedDateStr === dateInfoStr;
-
-                  return (
-                    <Day
-                      date={dateInfo.date}
-                      dateInfoStr={dateInfoStr}
-                      isCurMonth={isCurMonth}
-                      isSelectedDate={isSelectedDate}
-                      key={dateInfoStr}
-                      onSelectHandler={onSelectHandler}
-                    />
-                  );
-                }
-              )}
+              <Week
+                getDays={getDays}
+                renderDate={renderDate}
+                selectedDateStr={selectedDateStr}
+                onSelectHandler={onSelectHandler}
+              />
             </Grid>
           </>
         }
