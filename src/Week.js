@@ -11,14 +11,13 @@ const Week = ({
     {getDays({ ...renderDate, selectedDateStr }).map(
       ({ isCurMonth, isToday, ...dateInfo }) => {
         const dateInfoStr = Object.values(dateInfo).join('-');
-        const isSelectedDate = selectedDateStr && selectedDateStr === dateInfoStr;
 
         return (
           <Day
             date={dateInfo.date}
             dateInfoStr={dateInfoStr}
             isCurMonth={isCurMonth}
-            isSelectedDate={isSelectedDate}
+            isSelectedDate={selectedDateStr && selectedDateStr === dateInfoStr}
             key={dateInfoStr}
             onSelectHandler={onSelectHandler}
           />
