@@ -5,7 +5,6 @@ import {
   Button,
   Flex,
   Icon,
-  Space,
 } from "@trendmicro/react-styled-ui";
 import { MONTH } from './constants';
 
@@ -14,7 +13,7 @@ const Controller = ({
   renderDate,
 }) => {
   const [showChangeYear, setShowChangeYear] = useState(false);
-  const styles = showChangeYear ? 'opacity: 1' : 'opacity: 0';
+  const opacity = showChangeYear ? '1' : '0';
 
   return (
     <Flex justify="space-between" mb="3x">
@@ -30,6 +29,7 @@ const Controller = ({
         {MONTH[renderDate.month]}
         <Box
           ml='2x'
+          style={{ cursor: 'pointer' }}
           onMouseEnter={() => { setShowChangeYear(true) }}
           onMouseLeave={() => { setShowChangeYear(false) }}
         >
@@ -37,7 +37,7 @@ const Controller = ({
         </Box>
         <Flex
           direction='column'
-          style={{ styles }}
+          style={{ opacity }}
           onMouseEnter={() => { setShowChangeYear(true) }}
           onMouseLeave={() => { setShowChangeYear(false) }}
         >
