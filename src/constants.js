@@ -21,15 +21,33 @@ export const FEB_OF_LEAP_YEAR = 29;
 
 export const DEFAULT_WEEK_ROW = 5;
 
+export const THEME_MODE = {
+  DARK: 'dark',
+  LIGHT: 'light',
+}
+
 export const DAY_BACKGROUND_COLOR = {
-  DEFAULT: 'none',
-  HOVERED: 'gray:20',
-  SELECTED: 'blue:60',
+  [THEME_MODE.DARK]: {
+    DEFAULT: 'gray:90',
+    HOVERED: 'gray:80',
+    SELECTED: 'blue:60',
+  },
+  [THEME_MODE.LIGHT]: {
+    DEFAULT: 'none',
+    HOVERED: 'gray:20',
+    SELECTED: 'blue:60',
+  },
 };
 
 export const DAY_FONT_COLOR = {
-  [false]: 'black:tertiary',
-  [true]: 'white:primary',
+  [THEME_MODE.DARK]: {
+    [false]: 'white:primary',
+    [true]: 'white:primary',
+  },
+  [THEME_MODE.LIGHT]: {
+    [false]: 'black:tertiary',
+    [true]: 'white:primary',
+  }
 };
 
 export const WEEK_CONFIG = {
