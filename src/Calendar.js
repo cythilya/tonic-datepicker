@@ -89,9 +89,9 @@ const Calendar = ({ startDate: rawDate, onSelect }) => {
     return days;
   };
 
-  const chageRenderDate = (action) => {
+  const chageRenderDate = ({ changeYear = 0, changeMonth = 0 }) => {
     setRenderDate(({ year, month, date }) =>
-      dateToObj(new Date(year, month - 1 + action, date))
+      dateToObj(new Date(year + changeYear, month - 1 + changeMonth, date))
     );
   };
 
