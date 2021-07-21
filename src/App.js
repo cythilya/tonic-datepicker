@@ -56,11 +56,11 @@ export default function App() {
         p="6x"
       >
         <h1>Time Input</h1>
-        <Calendar />
         <TimeInput
           mt="3x"
           onChange={(value, isValid) => console.log(value, isValid)}
         />
+        <Calendar />
       </Box>
     </>
   );
