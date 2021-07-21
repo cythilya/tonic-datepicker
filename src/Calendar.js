@@ -75,7 +75,6 @@ const Calendar = ({ startDate: rawDate, onSelect }) => {
         year,
         month,
         date: i + 1,
-        isCurMonth: true,
         isToday: todayAry.join("") === `${year}${month}${i + 1}`
       });
     }
