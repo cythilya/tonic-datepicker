@@ -1,100 +1,116 @@
 import { useRef, useState, useEffect } from "react";
-import { Input, Flex, Icon } from "@trendmicro/react-styled-ui";
+import { InputGroup, Icon, Text } from "@trendmicro/react-styled-ui";
+import { useTheme } from "@trendmicro/react-styled-ui";
 
-import { useTimeInputErrorStyle, useIconStyle } from "./styles";
+import TimeInputCell from "./TimeInputCell";
+import { useTimeInputErrorStyle, useIconStyle, useInputStyle } from "./styles";
 
+const defaultSize = "md";
+const defaultVariant = "outline";
+
+/**
+ * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.
+ *
+ * @param text The text to be rendered.
+ * @param {String} font The css font descriptor that text is to be rendered with (e.g. "14px verdana").
+ *
+ * @see http://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
+ */
+function getTextWidth(text, font) {
+  // if given, use cached canvas for better performance
+  // else, create new canvas
+  var canvas =
+    getTextWidth.canvas ||
+    (getTextWidth.canvas = document.createElement("canvas"));
+  var context = canvas.getContext("2d");
+  context.font = font;
+  var metrics = context.measureText(text);
+  return metrics.width;
+}
+
+export const DEFAULT_VALUE = "00";
 const TimeInput = ({ value, onChange, ...rest }) => {
-  const timeInputEl = useRef(null);
-  const timeInputErrorStyle = useTimeInputErrorStyle();
-  const iconStyle = useIconStyle();
-  const [inputTime, setInputTime] = useState(value || "");
-  const [isInvalid, setIsInvalid] = useState(false);
-  const [curPosition, setCurPosition] = useState(0);
+  const SEPARATOR = ":";
+  const initValAry = value?.split(SEPARATOR) || [
+    DEFAULT_VALUE,
+    DEFAULT_VALUE,
+    DEFAULT_VALUE
+  ];
+  const [initHour, initMinute, initSecond] = initValAry;
 
-  const DEFAULT_VALUE = "--:--:--";
-  const MAX_TIME_LEN = DEFAULT_VALUE.length;
-  const inputErrorStyle =
-    inputTime.length === MAX_TIME_LEN && isInvalid ? timeInputErrorStyle : {};
+  const theme = useTheme();
+  const font = `${theme.fontSizes.sm} ${theme.fonts.base}`;
+  const inputWidth = Math.floor(getTextWidth("88", font));
+
+  const hourRef = useRef(null);
+  const minuteRef = useRef(null);
+  const secondRef = useRef(null);
+  const [valueAry, setValueAry] = useState(initValAry);
+  const [validAry, setValidAry] = useState([true, true, true]);
+  const isInValid = validAry.includes(false);
+
+  const timeInputErrorStyle = useTimeInputErrorStyle();
+  const inputErrorStyle = isInValid ? timeInputErrorStyle : {};
+  const iconStyle = useIconStyle();
+  const styleProps = useInputStyle({
+    size: defaultSize,
+    variant: defaultVariant
+  });
 
   useEffect(() => {
-    timeInputEl.current.setSelectionRange(curPosition, curPosition);
-  }, [curPosition]);
+    onChange(valueAry.join(SEPARATOR), !isInValid);
+  });
 
-  const inRange = (num, min, max) => +num >= min && +num <= max;
-
-  const checkTime = (timeStr) => {
-    const timeGroupReg = /(\d{1,2})?(\d{1,2})?(\d{1,2})?/;
-    const [, hour, min, sec] = timeStr.match(timeGroupReg) || [];
-
-    return {
-      timeValue: [hour, min, sec].filter((value) => value).join(":"),
-      isValidTime:
-        inRange(hour, 0, 24) && inRange(min, 0, 59) && inRange(sec, 0, 59)
-    };
-  };
-
-  const onChangeTime = (e) => {
-    const { value, selectionStart } = e.target;
-    const trimValue = value.replace(/[^\d+]/g, "");
-    const { timeValue, isValidTime } = checkTime(trimValue);
-    setInputTime(timeValue);
-    setIsInvalid(!isValidTime);
-    onChange(timeValue, isValidTime);
-
-    if (selectionStart) {
-      const position =
-        selectionStart === 2 || selectionStart === 5
-          ? selectionStart + 1
-          : selectionStart;
-      if (selectionStart === timeValue.length && selectionStart === position)
-        return;
-      setCurPosition(position);
-    }
-  };
-
-  const onKeyDown = (e) => {
-    const { key, shiftKey, target } = e;
-    const { selectionStart } = target;
-    const isTabKey = key === "Tab";
-    const groupSelection = [
-      [0, 2],
-      [3, 5],
-      [6, 8]
-    ];
-    const groupIdx = groupSelection.findIndex((group) =>
-      inRange(selectionStart, ...group)
+  const onChangeCell = (targetIdx, value, isValid) => {
+    setValueAry(
+      valueAry.map((oriVal, aryIdx) => (targetIdx === aryIdx ? value : oriVal))
     );
-    const nextGroup = groupSelection[groupIdx + 1];
-    const prevGroup = groupSelection[groupIdx - 1];
-
-    if (isTabKey && shiftKey && prevGroup) {
-      // Tab + shiftKey
-      e.preventDefault();
-      target.setSelectionRange(...prevGroup);
-    } else if (isTabKey && !shiftKey && nextGroup) {
-      // Tab
-      e.preventDefault();
-      target.setSelectionRange(...nextGroup);
-    }
+    setValidAry(
+      validAry.map((oriStatus, aryIdx) =>
+        targetIdx === aryIdx ? isValid : oriStatus
+      )
+    );
   };
 
   return (
-    <Flex direction="column" {...rest}>
-      <Flex position="relative" align="center" width={112}>
-        <Flex align="center" position="absolute" left={0} pl="3x" zIndex={3}>
-          <Icon icon="clock" {...iconStyle} />
-        </Flex>
-        <Input
-          ref={timeInputEl}
-          pl="9x"
-          placeholder={DEFAULT_VALUE}
-          value={inputTime}
-          onChange={onChangeTime}
-          onKeyDown={onKeyDown}
-          {...inputErrorStyle}
-        />
-      </Flex>
-    </Flex>
+    <InputGroup
+      tabIndex={-1}
+      {...styleProps}
+      {...inputErrorStyle}
+      {...rest}
+    >
+      <Icon icon="clock" {...iconStyle} mr="3x" />
+      <TimeInputCell
+        idx={0}
+        ref={hourRef}
+        initVal={initHour}
+        max={23}
+        width={inputWidth}
+        nextRef={minuteRef}
+        onChangeCell={onChangeCell}
+      />
+      <Text as="span">{SEPARATOR}</Text>
+      <TimeInputCell
+        idx={1}
+        ref={minuteRef}
+        initVal={initMinute}
+        max={59}
+        width={inputWidth}
+        nextRef={secondRef}
+        prevRef={hourRef}
+        onChangeCell={onChangeCell}
+      />
+      <Text as="span">{SEPARATOR}</Text>
+      <TimeInputCell
+        idx={2}
+        ref={secondRef}
+        initVal={initSecond}
+        max={59}
+        width={inputWidth}
+        prevRef={minuteRef}
+        onChangeCell={onChangeCell}
+      />
+    </InputGroup>
   );
 };
 
