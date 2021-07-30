@@ -176,7 +176,7 @@ const useIconStyle = (props) => {
   };
 };
 
-const useTimeInputErrorStyle = (props) => {
+const useInputErrorStyle = (props) => {
   return {
     borderColor: "red:50",
     _focus: {
@@ -205,4 +205,4 @@ const useInputStyle = ({ size, variant }) => {
   };
 };
 
-export { useIconStyle, useTimeInputErrorStyle, useInputStyle };
+export { useIconStyle, useInputErrorStyle, useInputStyle };

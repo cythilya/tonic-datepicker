@@ -10,6 +10,7 @@ import {
 
 import Calendar from "./Calendar";
 import TimeInput from "./TimeInput/TimeInput";
+import DateInput from "./TimeInput/DateInput";
 
 export default function App() {
   const [colorMode, setColorMode] = useColorMode();
@@ -56,9 +57,11 @@ export default function App() {
         p="6x"
       >
         <h1>Time Input</h1>
+        <DateInput
+          onChange={(value) => console.log(value)}
+        />
         <TimeInput
-          mt="3x"
-          onChange={(value, isValid) => console.log(value, isValid)}
+          onChange={(value) => console.log(value)}
         />
         {/* <Calendar /> */}
       </Box>
